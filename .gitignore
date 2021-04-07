@@ -102,3 +102,15 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Yarn Ignores (Not Zero-install)
+# https://next.yarnpkg.com/features/zero-installs
+# https://stackoverflow.com/a/58550620
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
+
+# Project Ignores
+config/local.json
+uploads/
