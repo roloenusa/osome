@@ -1,5 +1,5 @@
 const express = require('express');
-const { AuthUser } = require('../services/middlewares');
+const { AuthUser, AuthRole } = require('../services/middlewares');
 const Vitals = require('../models/vitals');
 
 const router = express.Router();
@@ -10,7 +10,7 @@ router.use(AuthUser);
 /**
  * Create a new vitals
  */
-router.post('/', async (req, res) => {
+router.post('/', AuthRole('contributor'), async (req, res) => {
   const { id } = req.tokenData;
   const vitalsData = req.body;
 
@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
 /**
  * Get vitals
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', AuthRole('guest'), async (req, res) => {
   const { id } = req.params;
   console.log(id);
 
@@ -42,7 +42,7 @@ router.get('/:id', async (req, res) => {
 /**
  * Update vitals
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', AuthRole('contributor'), async (req, res) => {
   const { id } = req.params;
   const {
     weight, height, head, temp, takenAt,

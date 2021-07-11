@@ -4,29 +4,28 @@ const fs = require('fs');
 const multer = require('multer');
 const AssetHandler = require('../services/asset-handler');
 const S3 = require('../services/aws-s3');
-const { AuthUser } = require('../services/middlewares');
+const { AuthUser, AuthRole } = require('../services/middlewares');
 const Asset = require('../models/asset');
 const User = require('../models/user');
 const Tag = require('../models/tag');
 const Timeline = require('../models/timeline');
 
 const upload = multer({ dest: 'uploads/' });
+const LIMIT = 10;
 
 const router = express.Router();
-
-const LIMIT = 10;
+router.use(AuthUser);
 
 /**
  * Upload a number of images to the server
  */
 const uploadFields = upload.fields([
   { name: 'image', maxCount: 1 },
-  { name: 'profile' },
-  { name: 'tags' },
 ]);
-router.post('', AuthUser, uploadFields, async (req, res) => {
+router.post('', AuthRole('contributor'), uploadFields, async (req, res) => {
   const { files: { image }, tokenData } = req;
   const { profile, tags = [], moment } = req.body;
+
   const user = await User.findById(tokenData.id);
 
   // Preprocess the file data
@@ -84,7 +83,7 @@ router.post('', AuthUser, uploadFields, async (req, res) => {
 /**
  * Get all assets stored in the database
  */
-router.get('/profile/:profile', AuthUser, async (req, res) => {
+router.get('/profile/:profile', AuthRole('guest'), async (req, res) => {
   const { profile } = req.params;
   const { page = 0 } = req.query;
   const query = {};
@@ -108,7 +107,7 @@ router.get('/profile/:profile', AuthUser, async (req, res) => {
 /**
  * Get an specific asset from the database
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', AuthRole('guest'), async (req, res) => {
   const { id } = req.params;
   const asset = await Asset.findById(id);
 
@@ -118,7 +117,7 @@ router.get('/:id', async (req, res) => {
 /**
  * Update an asset
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', AuthRole('contributor'), async (req, res) => {
   const { id } = req.params;
   const {
     tags,
@@ -150,7 +149,7 @@ router.put('/:id', async (req, res) => {
 /**
  * Retrieve the image directly from S3
  */
-router.get('/:size/:key', AuthUser, async (req, res) => {
+router.get('/:size/:key', AuthRole('guest'), async (req, res) => {
   const { size, key } = req.params;
 
   S3.getObject(`${size}/${key}`, (err, data) => {
@@ -165,7 +164,7 @@ router.get('/:size/:key', AuthUser, async (req, res) => {
 /**
  * Generate the signed url for S3 bucket for an asset.
  */
-router.get('/url/:size/:key', AuthUser, async (req, res) => {
+router.get('/url/:size/:key', AuthRole('guest'), async (req, res) => {
   const { size, key } = req.params;
 
   const image = await S3.getSignedUrl(`${size}/${key}`);

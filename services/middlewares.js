@@ -30,7 +30,7 @@ const AuthUser = async (req, res, next) => {
   });
 };
 
-const AuthRole = async (target) => (req, res, next) => {
+const AuthRole = (target) => (req, res, next) => {
   const { role } = req.tokenData;
   if (!RoleCheck(role, target)) {
     res.sendStatus(403);

@@ -1,5 +1,5 @@
 const express = require('express');
-const { AuthUser } = require('../services/middlewares');
+const { AuthUser, AuthRole } = require('../services/middlewares');
 const Moment = require('../models/moment');
 const Tag = require('../models/tag');
 const Timeline = require('../models/timeline');
@@ -14,7 +14,7 @@ const LIMIT = 10;
 /**
  * Create a new moment
  */
-router.post('', async (req, res) => {
+router.post('', AuthRole('contributor'), async (req, res) => {
   const { tokenData } = req;
   const {
     title,
@@ -48,7 +48,7 @@ router.post('', async (req, res) => {
 /**
  * Update a moment
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', AuthRole('contributor'), async (req, res) => {
   const { id } = req.params;
   const {
     text, title, tags, takenAt,
@@ -84,7 +84,7 @@ router.put('/:id', async (req, res) => {
 /**
  * Get a moment
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', AuthRole('guest'), async (req, res) => {
   const { id } = req.params;
 
   const moment = await Moment.findById(id)
@@ -97,7 +97,7 @@ router.get('/:id', async (req, res) => {
 /**
  * Retrieve all the moments for a profile
  */
-router.get('/profile/:profile', async (req, res) => {
+router.get('/profile/:profile', AuthRole('guest'), async (req, res) => {
   const { profile } = req.params;
   const { page = 0 } = req.query;
 

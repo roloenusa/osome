@@ -1,16 +1,18 @@
 const express = require('express');
-const { AuthUser } = require('../services/middlewares');
+const { AuthUser, AuthRole } = require('../services/middlewares');
 const Tag = require('../models/tag');
 const Timeline = require('../models/timeline');
 
 const router = express.Router();
+
+router.use(AuthUser);
 
 const LIMIT = 10;
 
 /**
  * Get all tags stored in the database
  */
-router.get('/profile/:profile', AuthUser, async (req, res) => {
+router.get('/profile/:profile', AuthRole('guest'), async (req, res) => {
   const { profile } = req.params;
   const query = {};
   if (profile) {
@@ -28,7 +30,7 @@ router.get('/profile/:profile', AuthUser, async (req, res) => {
 /**
  * Get all tags stored in the database
  */
-router.get('/profile/:profile/:name', AuthUser, async (req, res) => {
+router.get('/profile/:profile/:name', AuthRole('guest'), async (req, res) => {
   const { profile, name } = req.params;
   const { page = 0, limit = LIMIT } = req.query;
 

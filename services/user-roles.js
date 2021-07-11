@@ -9,7 +9,7 @@ const UserRoles = ['none', 'guest', 'contributor', 'admin'];
  */
 const RoleCheck = (role, target) => {
   const targetIndex = UserRoles.indexOf(target);
-  const roleIndex = UserRoles.indexOf(target);
+  const roleIndex = UserRoles.indexOf(role);
   return roleIndex >= targetIndex;
 };
 

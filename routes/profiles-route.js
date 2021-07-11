@@ -1,5 +1,5 @@
 const express = require('express');
-const { AuthUser } = require('../services/middlewares');
+const { AuthUser, AuthRole } = require('../services/middlewares');
 const Profile = require('../models/profile');
 
 const router = express.Router();
@@ -10,7 +10,7 @@ router.use(AuthUser);
 /**
  * Get all profiles stored in the database
  */
-router.get('/list', async (req, res) => {
+router.get('/list', AuthRole('guest'), async (req, res) => {
   const profiles = await Profile.find({});
 
   res.json(profiles);
@@ -19,7 +19,7 @@ router.get('/list', async (req, res) => {
 /**
  * Create a new profile
  */
-router.post('', async (req, res) => {
+router.post('', AuthRole('admin'), async (req, res) => {
   const { name, birthday, nickname } = req.body;
 
   const profile = new Profile({ name, birthday, nickname });
@@ -30,7 +30,7 @@ router.post('', async (req, res) => {
 /**
  * Update a profile
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', AuthRole('admin'), async (req, res) => {
   const { id } = req.params;
   const { birthday, nickname } = req.body;
 
@@ -50,7 +50,7 @@ router.put('/:id', async (req, res) => {
 /**
  * Retrieve a profile
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', AuthRole('guest'), async (req, res) => {
   const { id } = req.params;
   const profile = await Profile.findById(id);
 

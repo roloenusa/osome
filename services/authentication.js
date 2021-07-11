@@ -1,9 +1,7 @@
 const config = require('config');
 const jwt = require('jsonwebtoken');
 
-const AuthToken = require('../models/auth-token');
 const User = require('../models/user');
-const { RoleCheck } = require('./user-roles');
 
 class Authentication {
   static GenerateAccessToken(user) {
