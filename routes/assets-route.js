@@ -23,10 +23,10 @@ const uploadFields = upload.fields([
   { name: 'image', maxCount: 1 },
 ]);
 router.post('', AuthRole('contributor'), uploadFields, async (req, res) => {
-  const { files: { image }, tokenData } = req;
+  const { files: { image } } = req;
   const { profile, tags = [], moment } = req.body;
 
-  const user = await User.findById(tokenData.id);
+  const user = await User.findById(req.user.id);
 
   // Preprocess the file data
   const [{ originalname, path: filepath }] = image;

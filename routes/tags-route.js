@@ -40,8 +40,8 @@ router.get('/profile/:profile/:name', AuthRole('guest'), async (req, res) => {
   console.log(tag);
   const timeline = await Timeline.find({ tags: { $in: [tag.id] } })
     .getPage(page, limit)
-    .populate('moment')
-    .populate('asset');
+    .populate('moment tags')
+    .populate('asset tags');
 
   console.log(timeline);
   const count = await Timeline.countDocuments(query);

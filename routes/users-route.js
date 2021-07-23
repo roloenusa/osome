@@ -8,8 +8,8 @@ const router = express.Router();
  * Retrieve own account
  */
 router.get('/me', AuthUser, async (req, res) => {
-  const { tokenData } = req;
-  const user = await User.findById(tokenData.id)
+  const { id } = req.session.user;
+  const user = await User.findById(id)
     .catch((e) => {
       console.log('error:', e.message);
       res.sendStatus(404);

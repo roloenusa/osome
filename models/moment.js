@@ -3,11 +3,10 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const momentSchema = new Schema({
-  title: {
+  text: {
     type: String,
     required: true,
   },
-  text: String,
   takenAt: {
     type: Date,
     required: true,

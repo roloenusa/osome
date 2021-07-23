@@ -1,17 +1,6 @@
-const config = require('config');
-const jwt = require('jsonwebtoken');
-
 const User = require('../models/user');
 
 class Authentication {
-  static GenerateAccessToken(user) {
-    const tokenData = {
-      id: user.id,
-      role: user.role,
-    };
-    return jwt.sign(tokenData, config.oauth.jwt.client_secret, { expiresIn: '24h' });
-  }
-
   static async GoogleUser(data) {
     const {
       name, email, picture, sub,

@@ -1,38 +1,33 @@
-const config = require('config');
-const jwt = require('jsonwebtoken');
 const AuthToken = require('../models/auth-token');
+const User = require('../models/user');
 const { RoleCheck } = require('./user-roles');
 
 const AuthUser = async (req, res, next) => {
-  const token = req.headers.access_token;
-
-  if (token == null) {
+  if (!req.session) {
     res.sendStatus(401);
     return;
   }
 
-  await jwt.verify(token, config.oauth.jwt.client_secret, async (err, data) => {
-    if (err) {
-      console.log(err);
-      res.sendStatus(403);
-      return;
-    }
+  const { session: { user: { id } } } = req;
+  const user = User.findById(id);
+  if (!req.user) {
+    res.sendStatus(400);
+    return;
+  }
 
-    const authToken = await AuthToken.findById(token);
-
-    if (authToken) {
-      res.sendStatus(403);
-      return;
-    }
-
-    req.tokenData = data;
-    next();
-  });
+  req.user = user;
+  next();
 };
 
 const AuthRole = (target) => (req, res, next) => {
-  const { role } = req.tokenData;
+  if (req.user && !RoleCheck(req.user.role, target)) {
+    next();
+    return;
+  }
+
+  const { role } = req.session.user;
   if (!RoleCheck(role, target)) {
+    console.log(`Role mismatch. current: ${role}, target: ${target}`);
     res.sendStatus(403);
     return;
   }
@@ -45,6 +40,9 @@ const Logout = async (req, res, next) => {
   // Add the token to the expired list.
   const authToken = new AuthToken({ _id: token });
   authToken.save();
+
+  req.session.destroy((err) => console.log(err));
+
   res.sendStatus(200);
   next();
 };

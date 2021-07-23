@@ -27,6 +27,7 @@ mongoose.set('useCreateIndex', true);
 app.use(session({
   secret: config.session.secret,
   cookie: {
+    httpOnly: false,
     maxAge: config.session.max_age_millis,
   },
   resave: true,

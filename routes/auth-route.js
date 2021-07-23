@@ -4,7 +4,6 @@ const { OAuth2Client } = require('google-auth-library');
 
 const { Logout } = require('../services/middlewares');
 const Authentication = require('../services/authentication');
-const awsS3 = require('../services/aws-s3');
 
 const client = new OAuth2Client(config.oauth.google.client_id);
 
@@ -24,23 +23,10 @@ router.post('/google', async (req, res) => {
     });
 
   if (user) {
-    const cookie = await awsS3.generateCookies();
-    console.log('cookie', cookie);
-
-    Object.entries(cookie).forEach(([key, value]) => {
-      console.log(key, value);
-      res.cookie(key, value, {
-        path: '/',
-        domain: '.cloudfront.net',
-        // sameSite: false,
-      });
-      console.log(res.cookies);
-    });
-    res.cookie('test-abc', 'hello');
-
-    const jwtToken = Authentication.GenerateAccessToken(user);
+    req.session.user = {};
+    req.session.user.id = user.id;
+    req.session.user.role = user.role;
     res.status(201);
-    res.json(jwtToken);
   }
 });
 

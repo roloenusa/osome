@@ -11,7 +11,7 @@ router.use(AuthUser);
  * Create a new vitals
  */
 router.post('/', AuthRole('contributor'), async (req, res) => {
-  const { id } = req.tokenData;
+  const { id } = req.session.user;
   const vitalsData = req.body;
 
   const data = {
