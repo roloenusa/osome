@@ -9,8 +9,8 @@ const AuthUser = async (req, res, next) => {
   }
 
   const { session: { user: { id } } } = req;
-  const user = User.findById(id);
-  if (!req.user) {
+  const user = await User.findById(id);
+  if (!user) {
     res.sendStatus(400);
     return;
   }

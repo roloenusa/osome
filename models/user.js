@@ -27,11 +27,6 @@ const userSchema = new Schema({
       type: String,
     },
   },
-  profile: {
-    type: Schema.Types.ObjectId,
-    ref: 'profile',
-    required: true,
-  },
   preferences: {
     weight: {
       type: String,
@@ -41,12 +36,12 @@ const userSchema = new Schema({
     length: {
       type: String,
       enum: ['m', 'inches'],
-      default: 'kg',
+      default: 'm',
     },
     temp: {
       type: String,
-      enum: ['f', 'f'],
-      default: 'kg',
+      enum: ['f', 'c'],
+      default: 'f',
     },
   },
 }, {

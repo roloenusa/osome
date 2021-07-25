@@ -1,14 +1,22 @@
 {
-    "port": 3001,
-    "jwt_secret": "secret",
+    "session_secret": "ABC",
     "database": {
         "mongodb": {
-            "url": "mongodb://localhost/fizca"
+            "url": "mongodb://localhost/app"
+        }
+    },
+    "oauth": {
+        "google": {
+            "client_id": "123.apps.googleusercontent.com",
+            "client_secret": "abc"
+        },
+        "jwt": {
+            "client_secret": "abc"
         }
     },
     "session": {
         "max_age_millis": 86400000,
-        "secret": "'y?t[_y6^pG6]uK)Sfnr_/J#7QW/96/[kV*7+A!bs>akcvQPdNSMgB5z.vPu&f,g"
+        "secret": "abc"
     },
     "aws": {
         "apiVersion": "2006-03-01",
@@ -16,6 +24,12 @@
         "secretAccessKey": "",
         "region": "",
         "bucket_name": ""
+    },
+    "cloudfront": {
+        "keyPairId": "",
+        "privateKey": "",
+        "cfUrl":  "",
+        "ttl": 86400
     },
     "assets": [
         { "width": 200, "height": 200, "fit": "inside", "format": "jpg", "bucket": "small" },

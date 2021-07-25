@@ -6,30 +6,23 @@ class Authentication {
       name, email, picture, sub,
     } = data;
 
-    let user = await User.findOne({
+    const user = await User.findOne({
       method: 'google',
-      'google.id': sub,
+      'google.email': email,
     });
 
-    if (user && !user.avatar) {
-      user.avatar = picture;
-      await user.save();
+    if (!user) {
+      Promise.reject(new Error(`user ${name} not allowed`));
     }
 
-    if (!user) {
-      user = new User({
-        method: 'google',
-        username: name,
-        avatar: picture,
-        google: {
-          id: sub,
-          email,
-          displayName: name,
-        },
-      });
-      user.save();
-      console.log(`user created: ${user.name()}`);
-    }
+    user.username = name;
+    user.avatar = picture;
+    user.google = {
+      id: sub,
+      email,
+      displayName: name,
+    };
+    user.save();
 
     return user;
   }

@@ -28,6 +28,7 @@ router.post('/google', async (req, res) => {
     req.session.user.role = user.role;
     res.status(201);
   }
+  res.send();
 });
 
 router.get('/logout', Logout);
