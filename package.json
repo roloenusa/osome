@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "startd": "nodemon app.js"
+    "startd": "nodemon app.js",
+    "user:invite": "node ./scripts/invite_user.js",
+    "profile:create": "node ./scripts/create_profile.js"
   },
   "repository": {
     "type": "git",
@@ -33,7 +35,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.10",
     "multer": "^1.4.2",
-    "sharp": "^0.25.3"
+    "sharp": "^0.25.3",
+    "yargs": "^17.0.1"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
