@@ -26,6 +26,7 @@ router.post('/google', async (req, res) => {
     req.session.user = {};
     req.session.user.id = user.id;
     req.session.user.role = user.role;
+
     res.status(201);
   }
   res.send();
