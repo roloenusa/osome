@@ -24,6 +24,7 @@ class AssetHandler {
     } = options;
     return Sharp(filepath)
       .toFormat(format)
+      .rotate()
       .resize({ width, height, fit })
       .toBuffer()
       .then((buffer) => buffer)
