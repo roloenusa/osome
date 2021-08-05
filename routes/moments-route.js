@@ -15,7 +15,7 @@ const LIMIT = 10;
  * Create a new moment
  */
 router.post('', AuthRole('contributor'), async (req, res) => {
-  const { session: { userId } } = req;
+  const { session: { user } } = req;
   const {
     title,
     text,
@@ -31,7 +31,7 @@ router.post('', AuthRole('contributor'), async (req, res) => {
     text,
     profile,
     tags: tagObjs,
-    user: userId,
+    user: user.id,
   });
   await moment.save();
 
