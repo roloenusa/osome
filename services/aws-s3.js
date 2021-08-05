@@ -76,11 +76,28 @@ class AWSS3 {
     return this.s3.getSignedUrl('getObject', params);
   }
 
+  /**
+   * Add an object to the S3 bucket.
+   * @param {string} key  object to name including folders
+   * @param {function} callback
+   */
   async getObject(key, callback) {
     const { bucket_name: bucketName } = this.awsConfig;
 
     const params = { Bucket: bucketName, Key: key };
     this.s3.getObject(params, callback);
+  }
+
+  /**
+   * Remove an object from the s3 bucket
+   * @param {string} key  object to name including folders
+   * @param {function} callback
+   */
+  async removeObject(key, callback) {
+    const { bucket_name: bucketName } = this.awsConfig;
+
+    const params = { Bucket: bucketName, Key: key };
+    this.s3.deleteObject(params, callback);
   }
 
   /**

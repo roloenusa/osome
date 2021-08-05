@@ -8,7 +8,8 @@
     "start": "node app.js",
     "startd": "nodemon app.js",
     "user:invite": "node ./scripts/invite_user.js",
-    "profile:create": "node ./scripts/create_profile.js"
+    "profile:create": "node ./scripts/create_profile.js",
+    "asset:remove": "node ./scripts/remove_asset.js"
   },
   "repository": {
     "type": "git",
