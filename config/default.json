@@ -2,7 +2,7 @@
     "session_secret": "ABC",
     "database": {
         "mongodb": {
-            "url": "mongodb://localhost/app"
+            "url": ""
         }
     },
     "oauth": {

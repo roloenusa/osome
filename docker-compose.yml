@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  osome-server:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+      MONGODB_URI: mongodb://root:somepass@mongodb:27017
+      PORT: 3001
+    ports:
+      - "9229:9229"
+      - "3001:3001"
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    networks:
+      - osome-network
+    volumes:
+      - ./:/app
+
+  #mongo
+  mongodb:
+    image: mongo:5.0.3
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: somepass
+    networks:
+      - osome-network
+    ports:
+      - 27017:27017
+
+volumes:
+  mongo-data:
+
+networks:
+  osome-network:
+    driver: bridge

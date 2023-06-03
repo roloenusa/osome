@@ -30,7 +30,7 @@ Instructions can be found here: https://formulae.brew.sh/formula/node@12
 
 **brew**
 ```bash
-brew install node@12
+brew install node@18
 
 # Note: After this, you may need to update your PATH. Keep an eye on the output of brew.
 # Example Output:
@@ -38,36 +38,9 @@ brew install node@12
 #  echo 'export PATH="/usr/local/opt/node@12/bin:$PATH"' >> ~/.zshrc
 ```
 
-## Yarn
-
-There is no significan difference between Yarn and NPM for package management.
-There is a breakdown on how they operate here: https://www.sitepoint.com/yarn-vs-npm/.
-
-The Yarn documentation can be found here https://yarnpkg.com/getting-started
-
-Install Yarn base version 1.22
-
-```bash
-npm install -g yarn
-```
-
 ## Database
 
 We're using MongoDB.
-
-**Mac**
-
-In mac you can just install via homebrew:
-
-```bash
-brew update
-brew tap mongodb/brew
-brew install mongodb-community
-```
-
-**Windows**
-
-Follow the documentation: https://www.mongodb.com/download-center/community
 
 #### Database Explorer
 
@@ -90,8 +63,10 @@ https://robomongo.org/download
 
 ```bash
 # From within the server directory
-yarn install
+npm install
 ```
+
+Additionally, the project runs a local dockerfile to minimize the installation requirements and ensure cross system compatibility.
 
 ## Project Configurations
 
@@ -118,18 +93,11 @@ Credentials can be found in the [Google App](https://console.cloud.google.com/ap
 Normal startup
 
 ```bash
-brew services start mongodb-community # Run with stop to halt mongodb
-yarn start
+docker-compose up --build
 ```
-
-With deamon (hot code reload):
-
-```bash
-yarn startd
-````
 
 Application then runs on http://localhost:3001 by default.
 The port can be changed overriding the `local.json` file,
 however, any client will also need to be updated.
 
-To test that things are running correctly, navigate to your [local oath link](localhost:3001/google/oauth) and after you select an account, you should see a log in your yarn console that your account was created.
+To test that things are running correctly, navigate to your [local oath link](localhost:3001/google/oauth) and after you select an account, you should see a log in your console that your account was created.

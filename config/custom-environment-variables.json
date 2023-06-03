@@ -19,7 +19,7 @@
     },
     "database": {
         "mongodb": {
-            "url": "MONGO_URL"
+            "url": "MONGODB_URI"
         }
     },
     "cors_whitelist": "CORS_WHITELIST"
